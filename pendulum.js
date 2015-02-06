@@ -77,10 +77,6 @@ function init() {
     var setPoint = Math.PI;
     var TWO_PI = Math.PI*2;
 
-    var proportionalGain = 1.0;
-    var integralGain = 1.0;
-    var derivativeGain = 1.0;
-
     var origin = new b2Vec2(0,0);
 
     function impulseFunc(amount) {
@@ -291,13 +287,19 @@ function init() {
 
         errorsHistoryField.innerText = errors.join("\n");
 
-        var impulse = (proportionalGain*error + integralGain*errorsSum + derivativeGain*errorDerivative)/1;
-        var impulseVec = new b2Vec2(impulse,0);
-        var point = cartBody.GetWorldPoint(origin);
-        impulseField.innerText = impulse;
-        impulsePointField.innerText = point.x + " " + point.y;
-        //cartBody.ApplyImpulse(impulseVec, point);
+        var proportionalGain = parseInt(document.getElementById("proportionalGain").innerHTML) / 1000;
+        var integralGain = parseInt(document.getElementById("integralGain").innerHTML) / 1000;
+        var derivativeGain = parseInt(document.getElementById("derivativeGain").innerHTML) / 1000;
 
+        var impulse = (proportionalGain*error + integralGain*errorsSum + derivativeGain*errorDerivative)/1;
+        if (!isNaN(impulse)) {
+            var impulseVec = new b2Vec2(impulse,0);
+            var point = cartBody.GetWorldPoint(origin);
+            impulseField.innerText = impulse;
+            impulsePointField.innerText = point.x + " " + point.y;
+            cartBody.ApplyImpulse(impulseVec, point);
+        }
+        
         //alert(field);
         if(mouseJoint) {
             if(isMouseDown) {

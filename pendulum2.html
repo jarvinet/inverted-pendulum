@@ -3,35 +3,60 @@
       <title>Box2dWeb Demo</title>
    </head>
    <body onload="init();">
-<div style="float:left;">
-      <canvas id="canvas" width="600" height="400" style="background-color:#333333;" ></canvas>
-</div>
+     <div>
+       <canvas id="canvas" width="600" height="400" style="background-color:#333333;" ></canvas>
+     </div>
 
-<div style="float:left;">
-      <div><span>Set Point: </span><span id="setPoint"></span></div>
-      <div><span>Impulse: </span><span id="impulse"></span></div>
-      <div><span>Impulse Point: </span><span id="impulsePoint"></span></div>
-      <div><button id="buttonLeft"> &lt; </button>
-           <button id="buttonRight"> &gt; </button>
-      </div>
+     <div>
+       <span>Proportional Gain</span><input type="range" min="0" max="100" value="50" onchange="showProportionalGain(this.value);"/>
+       <span id="proportionalGain">50</span>
+     </div
+     <div>
+       <span>Integral Gain</span><input type="range" min="0" max="100" value="50" onchange="showIntegralGain(this.value);"/>
+       <span id="integralGain">50</span>
+     </div>
+     <div>
+       <span>Derivative Gain</span><input type="range" min="0" max="100" value="50" onchange="showDerivativeGain(this.value);"/>
+       <span id="derivativeGain">50</span> 
+     </div>
 
-    <div style="float:left;">
-      <div><span>Joint angle: </span><span id="jointAngle"></span></div>
-      <div><span>Sum of Joint angle: </span><span id="jointAngleSum"></span></div>
-      <div><span>Derivative Joint angle: </span><span id="jointAngleDerivative"></span></div>
-      <div>Joint angle history: </div><div id="jointAngleHistory"></div>
-    </div>
-
-    <div style="float:left;">
-      <div><span>Error: </span><span id="error"></span></div>
-      <div><span>Sum of errors: </span><span id="errorsSum"></span></div>
-      <div><span>Derivative of errors: </span><span id="errorsDerivative"></span></div>
-      <div>Errors history: </div><div id="errorsHistory"></div>
-    </div>
-</div>
+     <script type="text/javascript">
+       function showProportionalGain (value) {
+       document.getElementById("proportionalGain").innerHTML=value;
+       }
+       function showIntegralGain (value) {
+       document.getElementById("integralGain").innerHTML=value;
+       }
+       function showDerivativeGain (value) {
+       document.getElementById("derivativeGain").innerHTML=value;
+       }
+     </script>
+     
+     <div>
+       <div><span>Set Point: </span><span id="setPoint"></span></div>
+       <div><span>Impulse: </span><span id="impulse"></span></div>
+       <div><span>Impulse Point: </span><span id="impulsePoint"></span></div>
+       <div><button id="buttonLeft"> &lt; </button>
+       <button id="buttonRight"> &gt; </button>
+       </div>
+       
+       <div>
+         <div><span>Joint angle: </span><span id="jointAngle"></span></div>
+         <div><span>Sum of Joint angle: </span><span id="jointAngleSum"></span></div>
+         <div><span>Derivative Joint angle: </span><span id="jointAngleDerivative"></span></div>
+         <div>Joint angle history: </div><div id="jointAngleHistory"></div>
+       </div>
+       
+       <div>
+         <div><span>Error: </span><span id="error"></span></div>
+         <div><span>Sum of errors: </span><span id="errorsSum"></span></div>
+         <div><span>Derivative of errors: </span><span id="errorsDerivative"></span></div>
+         <div>Errors history: </div><div id="errorsHistory"></div>
+       </div>
+     </div>
 
    </body>
    <script type="text/javascript" src="Box2dWeb-2.1.a.3.js"></script>
    <script type="text/javascript" src="pendulum.js"></script>
-
+   
 </html>
