@@ -54,7 +54,7 @@ function init() {
     var setPointField = document.getElementById("setPoint")
     var impulseField = document.getElementById("impulse")
     var impulsePointField = document.getElementById("impulsePoint")
-
+    var originalJointAngleField = document.getElementById("originalJointAngle")
     var jointAngleField = document.getElementById("jointAngle")
     var jointAngleSumField = document.getElementById("jointAngleSum")
     var jointAngleDerivativeField = document.getElementById("jointAngleDerivative")
@@ -259,24 +259,23 @@ function init() {
                 mouseJoint = world.CreateJoint(md);
                 body.SetAwake(true);
             }
-
         }
 
         var jointAngleOriginal = revoluteJoint.GetJointAngle();
+        originalJointAngleField.innerText = jointAngleOriginal;
+
         var jointAngle = normalizeAngle(jointAngleOriginal);
-//        if (jointAngleOriginal != jointAngle) {
-//            revoluteJoint.SetJointAngle(jointAngle);
-//        }
-        var jointAngleSum = addProcessVariable(jointAngle);
         jointAngleField.innerText = jointAngle;
+
+        var jointAngleSum = addProcessVariable(jointAngle);
+        jointAngleSumField.innerText = jointAngleSum;
 
         var jointAngleDerivative = processVariablesDerivative();
         jointAngleDerivativeField.innerText = jointAngleDerivative;
 
-        jointAngleSumField.innerText = jointAngleSum;
-        jointAngleHistoryField.innerText = processVariables.join("\n");
+//        jointAngleHistoryField.innerText = processVariables.join("\n");
 
-        error = jointAngle - setPoint;
+        error = setPoint - jointAngle;
         errorField.innerText = error;
 
         var errorDerivative = errorsDerivative();
@@ -285,21 +284,22 @@ function init() {
         var errorsSum = addError(error);
         errorsSumField.innerText = errorsSum;
 
-        errorsHistoryField.innerText = errors.join("\n");
+//        errorsHistoryField.innerText = errors.join("\n");
+        var engagePIDController = document.getElementById("engagePIDController").checked;
+        if (engagePIDController) {
+            var proportionalGain = parseInt(document.getElementById("proportionalGain").innerHTML) / 1000;
+            var integralGain = parseInt(document.getElementById("integralGain").innerHTML) / 1000;
+            var derivativeGain = parseInt(document.getElementById("derivativeGain").innerHTML) / 1000;
 
-        var proportionalGain = parseInt(document.getElementById("proportionalGain").innerHTML) / 1000;
-        var integralGain = parseInt(document.getElementById("integralGain").innerHTML) / 1000;
-        var derivativeGain = parseInt(document.getElementById("derivativeGain").innerHTML) / 1000;
-
-        var impulse = (proportionalGain*error + integralGain*errorsSum + derivativeGain*errorDerivative)/1;
-        if (!isNaN(impulse)) {
-            var impulseVec = new b2Vec2(impulse,0);
-            var point = cartBody.GetWorldPoint(origin);
-            impulseField.innerText = impulse;
-            impulsePointField.innerText = point.x + " " + point.y;
-            cartBody.ApplyImpulse(impulseVec, point);
+            var impulse = (proportionalGain*error + integralGain*errorsSum + derivativeGain*errorDerivative)/1;
+            if (!isNaN(impulse)) {
+                var impulseVec = new b2Vec2(impulse,0);
+                var point = cartBody.GetWorldPoint(origin);
+                impulseField.innerText = impulse;
+                impulsePointField.innerText = point.x + " " + point.y;
+                cartBody.ApplyImpulse(impulseVec, point);
+            }
         }
-        
         //alert(field);
         if(mouseJoint) {
             if(isMouseDown) {
@@ -318,11 +318,11 @@ function init() {
     //helpers
 
     function normalizeAngle(angle) {
-        if (angle > TWO_PI) {
-            return angle - TWO_PI;
+        while (angle > TWO_PI) {
+            angle -= TWO_PI;
         }
-        if (angle < 0) {
-            return angle + TWO_PI;
+        while (angle < 0) {
+            angle += TWO_PI;
         }
         return angle;
     }

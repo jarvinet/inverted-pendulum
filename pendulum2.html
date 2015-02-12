@@ -1,6 +1,7 @@
 <html>
    <head>
-      <title>Box2dWeb Demo</title>
+     <title>Inverted Pendulum</title>
+     <link rel="stylesheet" type="text/css" href="style.css"/>
    </head>
    <body onload="init();">
      <div>
@@ -8,16 +9,19 @@
      </div>
 
      <div>
-       <span>Proportional Gain</span><input type="range" min="0" max="100" value="50" onchange="showProportionalGain(this.value);"/>
-       <span id="proportionalGain">50</span>
-     </div
-     <div>
-       <span>Integral Gain</span><input type="range" min="0" max="100" value="50" onchange="showIntegralGain(this.value);"/>
-       <span id="integralGain">50</span>
+       <input id="engagePIDController" type="checkbox" value="false">Engage PID controller
      </div>
-     <div>
-       <span>Derivative Gain</span><input type="range" min="0" max="100" value="50" onchange="showDerivativeGain(this.value);"/>
-       <span id="derivativeGain">50</span> 
+
+     <div class="slider">
+       <span class="text">Proportional Gain</span><input type="range" min="0" max="100" value="50" onchange="showProportionalGain(this.value);"></input><span id="proportionalGain">50</span>
+     </div>
+
+     <div class="slider">
+       <span class="text">Integral Gain</span><input type="range" min="0" max="100" value="50" onchange="showIntegralGain(this.value);"></input><span id="integralGain">50</span>
+     </div>
+     
+     <div class="slider">
+       <span class="text">Derivative Gain</span><input type="range" min="0" max="100" value="50" onchange="showDerivativeGain(this.value);"></input><span id="derivativeGain">50</span> 
      </div>
 
      <script type="text/javascript">
@@ -41,6 +45,7 @@
        </div>
        
        <div>
+         <div><span>Original Joint angle: </span><span id="originalJointAngle"></span></div>
          <div><span>Joint angle: </span><span id="jointAngle"></span></div>
          <div><span>Sum of Joint angle: </span><span id="jointAngleSum"></span></div>
          <div><span>Derivative Joint angle: </span><span id="jointAngleDerivative"></span></div>
